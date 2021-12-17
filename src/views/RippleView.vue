@@ -16,6 +16,7 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        padding-bottom: 200px;
     }
     .ripple {
         margin-top: 200px;
@@ -27,6 +28,9 @@
         text-align: center;
         line-height: 80px;
         user-select: none;
+    }
+    .ripple:first-child {
+        margin-top: 50px;
     }
     .ripple:hover {
         cursor: pointer;
