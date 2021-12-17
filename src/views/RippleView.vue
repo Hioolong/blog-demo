@@ -3,18 +3,32 @@
 </script>
 
 <template>
-    <div class="box" v-ripple>
-        
+    <div class="wrapper">
+        <div class="ripple" v-ripple-step-one>默认位置</div>
+        <div class="ripple" v-ripple-overflow>看球儿怎么动</div>
+        <div class="ripple" v-ripple>快点我</div>
     </div>
 </template>
 
 <style scoped>
-    .box {
-        margin-top: 50px;
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .ripple {
+        margin-top: 200px;
         width: 160px;
         height: 80px;
         border: 1px solid #666;
         border-radius: 8px;
         box-sizing: border-box;
+        text-align: center;
+        line-height: 80px;
+        user-select: none;
+    }
+    .ripple:hover {
+        cursor: pointer;
     }
 </style>

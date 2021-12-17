@@ -9,6 +9,7 @@ interface RippleStyles {
 }
 
 function createRipple(this: HTMLElement, event: MouseEvent) {
+    removeRipple(this)
 
     const { x, y, centerX ,centerY ,size } = computedRippleStyles(this, event)
     
@@ -16,15 +17,14 @@ function createRipple(this: HTMLElement, event: MouseEvent) {
     ripple.classList.add('var-ripple')
     ripple.style.width = `${size}px`
     ripple.style.height = `${size}px`
-    ripple.style.transform = `translate(${x}px, ${y}px) scale3d(.3, .3, .3)`
+    // ripple.style.transform = `translate(${x}px, ${y}px) scale3d(.3, .3, .3)`
     ripple.style.backgroundColor = 'pink'
 
     window.setTimeout(() => {
-        ripple.style.transform = `translate(${centerX}px, ${centerY}px) scale3d(1, 1, 1)`
+        // ripple.style.transform = `translate(${centerX}px, ${centerY}px) scale3d(1, 1, 1)`
         ripple.style.opacity = `.35`
-    }, 20)
+      }, 20)
     
-    setParentElementStyles(this)
     this.appendChild(ripple)
 }
 
@@ -51,35 +51,23 @@ function computedRippleStyles(element: HTMLElement, event: MouseEvent): RippleSt
     return { x, y, size, centerX, centerY }
 }
 
-function setParentElementStyles(element: HTMLElement) {
-    const { zIndex, position } = window.getComputedStyle(element)
-
-    element.style.overflow = 'hidden'
-    position === 'static' && (element.style.position = 'relative')
-    zIndex === 'auto' && (element.style.zIndex = '1')    
-}
-
-function removeRipple(this: HTMLElement) {
-    window.setTimeout(() => {
-        const ripples = this.querySelectorAll('.var-ripple')
-        if (ripples.length > 0) {
-            ripples.forEach((ripple) => this.removeChild(ripple))
-        }
-    }, 250)
-}
-
-const Ripple: Directive & Plugin = {
-    mounted(el: HTMLElement) {
-        el.addEventListener('mousedown', createRipple, { passive: true })
-        el.addEventListener('mouseup', removeRipple, { passive: true })
-    },
-    install(app: App) {
-        app.directive('ripple', this)
-    },
-    unmounted(el: HTMLElement) {
-        el.removeEventListener('mousedown', createRipple)
-        el.removeEventListener('mouseup', removeRipple)
+function removeRipple(element: HTMLElement) {
+    const ripples = element.querySelectorAll('.var-ripple')
+    if (ripples.length > 0) {
+        ripples.forEach((ripple) => element.removeChild(ripple))
     }
 }
 
-export default Ripple
+const RippleStepOne: Directive & Plugin = {
+    mounted(el: HTMLElement) {
+        el.addEventListener('click', createRipple)
+    },
+    install(app: App) {
+        app.directive('rippleStepOne', this)
+    },
+    unmounted(el: HTMLElement) {
+        el.removeEventListener('click', createRipple)
+    }
+}
+
+export default RippleStepOne
