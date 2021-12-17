@@ -9,6 +9,7 @@ interface RippleStyles {
 }
 
 function createRipple(this: HTMLElement, event: MouseEvent) {
+    removeRipple(this)
 
     const { x, y, centerX ,centerY ,size } = computedRippleStyles(this, event)
     
@@ -22,6 +23,8 @@ function createRipple(this: HTMLElement, event: MouseEvent) {
     window.setTimeout(() => {
         ripple.style.transform = `translate(${centerX}px, ${centerY}px) scale3d(1, 1, 1)`
         ripple.style.opacity = `.35`
+
+        window.setTimeout(() => { removeRipple(this) }, 250)
     }, 20)
     
     setParentElementStyles(this)
@@ -59,26 +62,22 @@ function setParentElementStyles(element: HTMLElement) {
     zIndex === 'auto' && (element.style.zIndex = '1')    
 }
 
-function removeRipple(this: HTMLElement) {
-    window.setTimeout(() => {
-        const ripples = this.querySelectorAll('.var-ripple')
-        if (ripples.length > 0) {
-            ripples.forEach((ripple) => this.removeChild(ripple))
-        }
-    }, 250)
+function removeRipple(element: HTMLElement) {
+    const ripples = element.querySelectorAll('.var-ripple')
+    if (ripples.length > 0) {
+        ripples.forEach((ripple) => element.removeChild(ripple))
+    }
 }
 
 const Ripple: Directive & Plugin = {
     mounted(el: HTMLElement) {
         el.addEventListener('mousedown', createRipple, { passive: true })
-        el.addEventListener('mouseup', removeRipple, { passive: true })
     },
     install(app: App) {
         app.directive('ripple', this)
     },
     unmounted(el: HTMLElement) {
         el.removeEventListener('mousedown', createRipple)
-        el.removeEventListener('mouseup', removeRipple)
     }
 }
 
