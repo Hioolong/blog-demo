@@ -19,8 +19,8 @@
         padding-bottom: 200px;
     }
     .ripple {
-        margin-top: 200px;
-        width: 160px;
+        margin-top: 500px;
+        width: 360px;
         height: 80px;
         border: 1px solid #666;
         border-radius: 8px;
